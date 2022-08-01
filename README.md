@@ -1,4 +1,5 @@
 # AirBnB clone - The console
+![ABNB Logo](./image/hbnb_logo.png)
 
 ## Description
 This is the first version of the airbnb clone. It is comprised of a command line interpreter
