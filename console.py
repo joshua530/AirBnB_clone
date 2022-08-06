@@ -197,7 +197,8 @@ class HBNBCommand(cmd.Cmd):
                 attribute = args[1].strip(" \"'")
                 value = args[2]
                 HBNBCommand.do_update(
-                    self, "{} {} {} {}".format(class_name, id, attribute, value))
+                    self, "{} {} {} {}".format(
+                        class_name, id, attribute, value))
 
 
 def key_in_storage(id):
