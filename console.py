@@ -165,7 +165,11 @@ class HBNBCommand(cmd.Cmd):
             return
         method = args[1]
         if method == "all()":
-            HBNBCommand.do_all()
+            objs = []
+            for k, v in storage.all().items():
+                if class_name in k:
+                    objs.append(v)
+            print(objs)
         elif method == "count()":
             num = 0
             for k, v in storage.all().items():
