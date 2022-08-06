@@ -10,7 +10,7 @@ class BaseModelTest(unittest.TestCase):
         d = o.__dict__
         id = d['id']
         expect = '[{}] ({}) {}'\
-                .format(o.__class__.__name__, id, str(d))
+                .format(o.__class__.__name__, id, d)
         self.assertEqual(expect, str(o))
 
     def test_to_dict(self):
