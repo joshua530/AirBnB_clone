@@ -19,55 +19,40 @@ class BaseModel:
     """
 
     def __init__(self, *args, **kwargs):
-        """
-        Initialize attributes: random uuid, dates created/updated
-        """
+        """Instantiates a BaseModel instance"""
+        # use provided values to instantiate an object
         if kwargs:
-            for key, val in kwargs.items():
-                if "created_at" == key:
-                    self.created_at = datetime.strptime(kwargs["created_at"],
-                                                        "%Y-%m-%dT%H:%M:%S.%f")
-                elif "updated_at" == key:
-                    self.updated_at = datetime.strptime(kwargs["updated_at"],
-                                                        "%Y-%m-%dT%H:%M:%S.%f")
-                elif "__class__" == key:
-                    pass
+            for k, v in kwargs.items():
+                if k == "__class__":
+                    continue
+                elif k == "created_at":
+                    self.created_at = datetime.datetime.fromisoformat(v)
+                elif k == "updated_at":
+                    self.updated_at = datetime.datetime.fromisoformat(v)
                 else:
-                    setattr(self, key, val)
+                    setattr(self, k, v)
         else:
             self.id = str(uuid.uuid4())
-            self.created_at = datetime.now()
-            self.updated_at = datetime.now()
+            self.created_at = datetime.datetime.now()
+            self.updated_at = datetime.datetime.now()
             models.storage.new(self)
 
     def __str__(self):
-        """
-        Return string of info about model
-        """
-        return ('[{}] ({}) {}'.
-                format(self.__class__.__name__, self.id, self.__dict__))
-
-    def __repr__(self):
-        """
-        returns string representation
-        """
-        return (self.__str__())
+        """Returns string representation of a BaseModel object"""
+        return "[{}] ({}) {}".format(
+            self.__class__.__name__, self.id, self.__dict__)
 
     def save(self):
-        """
-        Update instance with updated time & save to serialized file
-        """
-        self.updated_at = datetime.now()
+        """Saves a BaseModel instance"""
+        self.updated_at = datetime.datetime.now()
         models.storage.save()
 
     def to_dict(self):
-        """
-        Return dic with string formats of times; add class info to dic
-        """
+        """Converts instance to dictionary"""
         dic = {}
         dic["__class__"] = self.__class__.__name__
         for k, v in self.__dict__.items():
-            if isinstance(v, (datetime, )):
+            if isinstance(v, datetime.datetime):
                 dic[k] = v.isoformat()
             else:
                 dic[k] = v
