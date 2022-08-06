@@ -181,7 +181,8 @@ class HBNBCommand(cmd.Cmd):
             method_and_args = method.split("(")  # ['method', '<args>)']
             method = method_and_args[0]
             args = method_and_args[1].split(")")[0]
-            if method == "show":
+            # parse for methods that take only one parameter
+            if method == "show" or method == "destroy":
                 # remove quotes
                 id = args.strip("\"'")
                 key = construct_key(class_name, id)
@@ -190,7 +191,12 @@ class HBNBCommand(cmd.Cmd):
                     print("** no instance found **")
                     return
                 instance = stored_instances[key]
+
+            if method == "show":
                 print(instance)
+            elif method == "destroy":
+                del storage.all()[key]
+                storage.save()
 
 
 def key_in_storage(id):
