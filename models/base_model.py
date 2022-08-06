@@ -51,11 +51,8 @@ class BaseModel:
 
     def to_dict(self):
         """Converts instance to dictionary"""
-        dic = {}
-        dic["__class__"] = self.__class__.__name__
-        for key, val in self.__dict__.items():
-            if isinstance(val, datetime.datetime):
-                dic[key] = val.isoformat()
-            else:
-                dic[key] = val
+        dic = self.__dict__.copy()
+        dic['__class__'] = self.__class__.__name__
+        dic['created_at'] = self.created_at.isoformat()
+        dic['updated_at'] = self.updated_at.isoformat()
         return dic
