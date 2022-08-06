@@ -170,6 +170,12 @@ class HBNBCommand(cmd.Cmd):
                 if class_name in k:
                     objs.append(v)
             print(objs)
+        elif method == "count()":
+            num = 0
+            for k, v in storage.all().items():
+                if class_name in k:
+                    num += 1
+            print(num)
 
 
 def key_in_storage(id):
