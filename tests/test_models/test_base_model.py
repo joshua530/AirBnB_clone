@@ -18,7 +18,7 @@ class BaseModelTest(unittest.TestCase):
         o.foo = 'bar'
         d = {
             'foo':'bar',
-            'created_at': o.created_at.isoformat(), 'id': o.id, '__class__': o.__class__.__name__}
+            'created_at': o.created_at.isoformat(), 'id': o.id, '__class__': o.__class__.__name__, 'updated_at': o.updated_at.isoformat()}
         self.assertEqual(d, o.to_dict())
 
     def test_instantiation_without_kwargs(self):
