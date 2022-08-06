@@ -170,7 +170,6 @@ class HBNBCommand(cmd.Cmd):
                 if class_name in k:
                     objs.append(v)
             print(objs)
-            
 
 
 def key_in_storage(id):
