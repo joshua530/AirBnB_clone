@@ -25,7 +25,11 @@ class BaseModel:
             for k, v in kwargs.items():
                 if k != "__class__":
                     if k == "created_at" or k == "updated_at":
-                        setattr(self, k, datetime.datetime.fromisoformat(v))
+                        setattr(
+                            self,
+                            k,
+                            datetime.datetime.strptime(
+                                v, "%Y-%m-%dT%H:%M:%S.%f"))
                     else:
                         setattr(self, k, v)
         else:
