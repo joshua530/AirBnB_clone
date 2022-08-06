@@ -6,7 +6,8 @@ import os
 from models import storage
 
 class FileStorageTest(unittest.TestCase):
-    __file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "file.json")
+    __file = "file.json"
+    __abs_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "file.json")
 
     def setUp(self):
         # delete any stored objects to start on a new slate
@@ -49,3 +50,11 @@ class FileStorageTest(unittest.TestCase):
         stored_items = storage.all()
         self.assertTrue(o_id in stored_items.keys())
         self.assertTrue(o2_id in stored_items.keys())
+
+    def test_no_error_if_file_is_empty(self):
+        # create empty file
+        with open(FileStorageTest.__file, "w") as f:
+            f.write("")
+        # attempt to load from empty file
+        storage.reload()
+        self.assertEqual(storage.all(), {})
