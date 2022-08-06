@@ -9,7 +9,7 @@ class BaseModelTest(unittest.TestCase):
         o.foo = 'bar'
         d = o.__dict__
         id = d['id']
-        expect = '[{}] ({}) <{}>'\
+        expect = '[{}] ({}) {}'\
                 .format(o.__class__.__name__, id, d)
         self.assertEqual(expect, str(o))
 
