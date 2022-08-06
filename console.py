@@ -152,6 +152,26 @@ class HBNBCommand(cmd.Cmd):
         setattr(storage.all()[key], attribute_name, cast_type(attribute_value))
         storage.all()[key].save()
 
+    def default(self, line):
+        """Runs if no default command is provided"""
+        args = tuple(line.split("."))
+        if len(args) < 2:
+            print("** invalid command **")
+            return
+
+        class_name = args[0]
+        if class_name not in HBNBCommand.__allowed_classes:
+            print("** class doesn't exist **")
+            return
+        method = args[1]
+        if method == "all()":
+            objs = []
+            for k, v in storage.all().items():
+                if class_name in k:
+                    objs.append(v)
+            print(objs)
+            
+
 
 def key_in_storage(id):
     """Checks whether a given key has been stored"""
