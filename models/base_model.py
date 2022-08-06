@@ -42,6 +42,10 @@ class BaseModel:
         return "[{}] ({}) {}".format(
             self.__class__.__name__, self.id, self.__dict__)
 
+    def __repr__(self):
+        """Returns standard string representation"""
+        return self.__str__()
+
     def save(self):
         """Saves a BaseModel instance"""
         self.updated_at = datetime.datetime.now()
