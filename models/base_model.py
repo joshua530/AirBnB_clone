@@ -19,45 +19,55 @@ class BaseModel:
     """
 
     def __init__(self, *args, **kwargs):
-        """Instantiates a BaseModel instance"""
-        # use provided values to instantiate an object
+        """
+        Initialize attributes: random uuid, dates created/updated
+        """
         if kwargs:
-            for k, v in kwargs.items():
-                if k != "__class__":
-                    if k == "created_at" or k == "updated_at":
-                        setattr(
-                            self,
-                            k,
-                            datetime.datetime.strptime(
-                                v, "%Y-%m-%dT%H:%M:%S.%f"))
-                    else:
-                        setattr(self, k, v)
+            for key, val in kwargs.items():
+                if "created_at" == key:
+                    self.created_at = datetime.strptime(kwargs["created_at"],
+                                                        "%Y-%m-%dT%H:%M:%S.%f")
+                elif "updated_at" == key:
+                    self.updated_at = datetime.strptime(kwargs["updated_at"],
+                                                        "%Y-%m-%dT%H:%M:%S.%f")
+                elif "__class__" == key:
+                    pass
+                else:
+                    setattr(self, key, val)
         else:
             self.id = str(uuid.uuid4())
-            self.created_at = datetime.datetime.now()
-            self.updated_at = self.created_at
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
             models.storage.new(self)
 
     def __str__(self):
-        """Returns string representation of a BaseModel object"""
-        return "[{}] ({}) {}".format(
-            self.__class__.__name__, self.id, self.__dict__)
+        """
+        Return string of info about model
+        """
+        return ('[{}] ({}) {}'.
+                format(self.__class__.__name__, self.id, self.__dict__))
 
     def __repr__(self):
-        """Returns standardized string representation of a BaseModel object"""
-        return self.__str__()
+        """
+        returns string representation
+        """
+        return (self.__str__())
 
     def save(self):
-        """Saves a BaseModel instance"""
-        self.updated_at = datetime.datetime.now()
+        """
+        Update instance with updated time & save to serialized file
+        """
+        self.updated_at = datetime.now()
         models.storage.save()
 
     def to_dict(self):
-        """Converts instance to dictionary"""
+        """
+        Return dic with string formats of times; add class info to dic
+        """
         dic = {}
         dic["__class__"] = self.__class__.__name__
         for k, v in self.__dict__.items():
-            if isinstance(v, datetime.datetime):
+            if isinstance(v, (datetime, )):
                 dic[k] = v.isoformat()
             else:
                 dic[k] = v
