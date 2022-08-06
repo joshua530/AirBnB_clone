@@ -176,19 +176,21 @@ class HBNBCommand(cmd.Cmd):
                 if class_name in k:
                     num += 1
             print(num)
-        elif method.startswith("show"):
-            # 'show("<id>")' split up so we remain with <id>
-            # remove brackets
-            id_with_quotes = method.split("(")[1].split(")")[0]
-            # remove quotes
-            id = id_with_quotes.strip("\"'")
-            key = construct_key(class_name, id)
-            stored_instances = storage.all()
-            if key not in stored_instances.keys():
-                print("** no instance found **")
-                return
-            instance = stored_instances[key]
-            print(instance)
+        else:
+            # 'method(args)' split up into method and arguments
+            method_and_args = method.split("(")  # ['method', '<args>)']
+            method = method_and_args[0]
+            args = method_and_args[1].split(")")[0]
+            if method == "show":
+                # remove quotes
+                id = args.strip("\"'")
+                key = construct_key(class_name, id)
+                stored_instances = storage.all()
+                if key not in stored_instances.keys():
+                    print("** no instance found **")
+                    return
+                instance = stored_instances[key]
+                print(instance)
 
 
 def key_in_storage(id):
