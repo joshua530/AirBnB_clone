@@ -165,11 +165,7 @@ class HBNBCommand(cmd.Cmd):
             return
         method = args[1]
         if method == "all()":
-            objs = []
-            for k, v in storage.all().items():
-                if class_name in k:
-                    objs.append(v)
-            print(objs)
+            HBNBCommand.do_all()
         elif method == "count()":
             num = 0
             for k, v in storage.all().items():
@@ -181,22 +177,23 @@ class HBNBCommand(cmd.Cmd):
             method_and_args = method.split("(")  # ['method', '<args>)']
             method = method_and_args[0]
             args = method_and_args[1].split(")")[0]
-            # parse for methods that take only one parameter
-            if method == "show" or method == "destroy":
-                # remove quotes
-                id = args.strip("\"'")
-                key = construct_key(class_name, id)
-                stored_instances = storage.all()
-                if key not in stored_instances.keys():
-                    print("** no instance found **")
-                    return
-                instance = stored_instances[key]
 
             if method == "show":
-                print(instance)
+                HBNBCommand.do_show(self, "{} {}".format(class_name, args))
             elif method == "destroy":
-                del storage.all()[key]
-                storage.save()
+                HBNBCommand.do_destroy(self, "{} {}".format(class_name, args))
+            elif method == "update":
+                # <id>, <attribute name>, <attribute value>
+                args = args.split(",")
+                if len(args) < 3:
+                    print("** invalid format **")
+                    return
+                # remove quotes and whitespace
+                id = args[0].strip(" \"'")
+                attribute = args[1].strip(" \"'")
+                value = args[2]
+                HBNBCommand.do_update(
+                    self, "{} {} {} {}".format(class_name, id, attribute, value))
 
 
 def key_in_storage(id):
