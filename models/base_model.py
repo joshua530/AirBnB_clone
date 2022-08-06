@@ -22,17 +22,15 @@ class BaseModel:
         """Instantiates a BaseModel instance"""
         # use provided values to instantiate an object
         if kwargs:
-            for key, val in kwargs.items():
-                if key == "__class__":
+            for k, v in kwargs.items():
+                if k == "__class__":
                     continue
-                elif key == "created_at":
-                    self.created_at = datetime.datetime.strptime(
-                        val, "%Y-%m-%dT%H:%M:%S.%f")
-                elif key == "updated_at":
-                    self.updated_at = datetime.datetime.strptime(
-                        val, "%Y-%m-%dT%H:%M:%S.%f")
+                elif k == "created_at":
+                    self.created_at = datetime.datetime.fromisoformat(v)
+                elif k == "updated_at":
+                    self.updated_at = datetime.datetime.fromisoformat(v)
                 else:
-                    setattr(self, key, val)
+                    setattr(self, k, v)
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.datetime.now()
@@ -51,8 +49,11 @@ class BaseModel:
 
     def to_dict(self):
         """Converts instance to dictionary"""
-        dic = self.__dict__.copy()
-        dic['__class__'] = self.__class__.__name__
-        dic['created_at'] = self.created_at.isoformat()
-        dic['updated_at'] = self.updated_at.isoformat()
+        dic = {}
+        dic["__class__"] = self.__class__.__name__
+        for k, v in self.__dict__.items():
+            if isinstance(v, datetime.datetime):
+                dic[k] = v.isoformat()
+            else:
+                dic[k] = v
         return dic
