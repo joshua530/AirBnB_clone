@@ -46,8 +46,8 @@ class FileStorage:
 
     def reload(self):
         """deserializes json file(__file_path) to __objects"""
+        FileStorage.__objects = {}
         try:
-            FileStorage.__objects = {}
             with open(FileStorage.__file_path, "r") as f:
                 tmp = json.load(f)
                 for id, data in tmp.items():
@@ -56,4 +56,7 @@ class FileStorage:
                     FileStorage.__objects[id] = \
                         FileStorage.__classes[data["__class__"]](**data)
         except FileNotFoundError:
+            pass
+        except json.decoder.JSONDecodeError:
+            # file exists but is empty
             pass
