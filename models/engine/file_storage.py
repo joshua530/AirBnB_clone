@@ -50,6 +50,3 @@ class FileStorage:
                         eval(data["__class__"])(**data)
         except FileNotFoundError:
             pass
-        except json.decoder.JSONDecodeError:
-            # file exists but is empty
-            pass
