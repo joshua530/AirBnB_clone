@@ -30,7 +30,7 @@ class FileStorage:
             key = "{}.{}".format(obj.__class__.__name__, obj.id)
             FileStorage.__objects[key] = obj
 
-    def save(self):
+    def save(self, obj=None):
         """Saves stored objects to file in json format"""
         dic = {}
         for k, obj in FileStorage.__objects.items():
