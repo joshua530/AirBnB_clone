@@ -16,12 +16,6 @@ class FileStorage:
     """FileStorage class definition"""
     __file_path = "file.json"
     __objects = {}
-    __classes = {
-        "BaseModel": BaseModel, "User": User,
-        "Amenity": Amenity, "Place": Place,
-        "Review": Review, "State": State,
-        "City": City
-    }
 
     def all(self):
         """Returns objects stored by the class"""
@@ -53,7 +47,7 @@ class FileStorage:
                     # instantiate each individual object using it's
                     # class constructor
                     FileStorage.__objects[id] = \
-                        FileStorage.__classes[data["__class__"]](**data)
+                        eval(data["__class__"])(**data)
         except FileNotFoundError:
             pass
         except json.decoder.JSONDecodeError:
