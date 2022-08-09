@@ -49,7 +49,7 @@ class BaseModel:
     def save(self):
         """Saves a BaseModel instance"""
         self.updated_at = datetime.datetime.utcnow()
-        models.storage.save()
+        # models.storage.save()
 
     def to_dict(self):
         """Converts instance to dictionary"""
