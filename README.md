@@ -69,4 +69,7 @@ $
 ## Environment
 - Operating System: Ubuntu 20.04 LTS
 - Language: Python 3.8.10
-- Style guidelines: [pycodestyle 2.8.0](https://github.com/pycqa/pycodestyle), [google python style guidelines](https://github.com/google/styleguide/blob/gh-pages/pyguide.md#38-comments-and-docstrings)
+- Style guidelines: [pycodestyle 2.8.0](https://github.com/pycqa/pycodestyle), [google python style guidelines](https://github.com/google/styleguide/blob/gh-pages/pyguide.md#38-comments-and-docstrings), w3c validator(implementation is in web_static/w3c_validator.py) which uses the [w3c api](https://validator.w3.org/docs/api.html) for w3c standards conformity checking
+
+## How to use w3c validator
+- `./web_static/w3c_validator.py <html file>`
